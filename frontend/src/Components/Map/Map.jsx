@@ -25,8 +25,7 @@ const calculateCenter = (data) => {
   };
 };
 
-const Map = ({ data }) => {
-  const [selectedMarker, setSelectedMarker] = useState(null);
+const Map = ({ data, selectedMarker, setSelectedMarker }) => {
   const [defaultCenter, setDefaultCenter] = useState({ lat: 0, lng: 0 });
   const [markerCenter, setMarkerCenter] = useState({ lat: 0, lng: 0 });
   const [zoomLevel, setZoomLevel] = useState(3);
@@ -51,9 +50,25 @@ const Map = ({ data }) => {
 
   useEffect(() => {
     const center = calculateCenter(data);
-    setMarkerCenter(center);
-    setDefaultCenter(center);
+    if (center.lat && center.lng) {
+      setMarkerCenter(center);
+      setDefaultCenter(center);
+    } else {
+      console.error("Invalid coordinates", center);
+    }
   }, [data]);
+  
+
+  useEffect(() => {
+    if (selectedMarker) {
+      setMarkerCenter(selectedMarker.coordinates);
+      setZoomLevel(6);
+    } else {
+      setMarkerCenter(defaultCenter);
+      setZoomLevel(3);
+    }
+  }, [selectedMarker, defaultCenter]);
+  
 
   return (
     <LoadScript googleMapsApiKey="AIzaSyBGY5aWWIzkTLNQXUD7PkjCV6Ul_ee8E34">
@@ -61,7 +76,7 @@ const Map = ({ data }) => {
         mapContainerStyle={containerStyle}
         onLoad={onLoad}
         center={markerCenter}
-        zoom={zoomLevel} // Dynamically set zoom level
+        zoom={zoomLevel}
       >
         {data.map((item, index) => (
           <Marker
@@ -108,7 +123,9 @@ const Map = ({ data }) => {
           </InfoWindow>
         )}
 
-        {selectedMarker && <Drawer data={selectedMarker} />}
+        {selectedMarker && (
+          <Drawer data={selectedMarker} setSelectedMarker={setSelectedMarker} />
+        )}
       </GoogleMap>
     </LoadScript>
   );

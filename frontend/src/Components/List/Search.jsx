@@ -9,7 +9,6 @@ const Search = ({ originalData, setalldata }) => {
   const [openFilter, setOpenFilter] = React.useState(false);
   const [selectedjobs, setSelectedjobs] = React.useState([]);
 
-  // Get unique roles
   const allroles = Array.from(new Set(originalData.map((item) => item.description)));
 
   const handleSearch = (e) => {
@@ -37,7 +36,7 @@ const Search = ({ originalData, setalldata }) => {
     >
       <input
         type="search"
-        placeholder="Search profiles..."
+        placeholder="Search by name and location"
         value={search}
         onChange={handleSearch}
         className={`border p-2 rounded-md w-full md:w-3/4 ${
