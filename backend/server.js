@@ -20,13 +20,13 @@ app.use(cors());
 
 
 app.use('/api/auth', require('./routes/authRoute'));
-app.use('/api/product',checkToken, require('./routes/ProductRoute'));
+app.use('/api/profile',checkToken, require('./routes/ProfileRoute'));
 
-app.use(express.static(path.join(__dirname, "../frontend", "dist")));
+// app.use(express.static(path.join(__dirname, "../frontend", "dist")));
 
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
-});
+// app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+// });
 
 app.listen(PORT, () => {
     console.log(`Server is Listening on http://localhost:${PORT}`)

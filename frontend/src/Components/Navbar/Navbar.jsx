@@ -7,8 +7,8 @@ import { useAuthContext } from "../../Contexts/AuthContext";
 import { IoLogOutOutline } from "react-icons/io5";
 
 const navigation = [
-  { name: "Products", id: "products" },
-  { name: "Add Product", id: "addproduct" },
+  { name: "All Profiles", id: "allProfiles" },
+  { name: "Manage Profiles", id: "manageProfiles" },
 ];
 
 const Navbar = ({ activetab, setActivetab }) => {
@@ -100,7 +100,7 @@ const Navbar = ({ activetab, setActivetab }) => {
               key={item.name}
               className={`cursor-pointer text-base font-semibold leading-6 `}
             >
-              {item.name !== "Add Product" ||
+              {item.id !== "manageProfiles" ||
               (authUser && authUser.role === "admin") ? (
                 <button
                   onClick={() => {
@@ -145,7 +145,7 @@ const Navbar = ({ activetab, setActivetab }) => {
           <div className="mt-6 space-y-4">
             {navigation.map((item) => (
               <div key={item.name}>
-                {item.name !== "Add Product" ||
+                {item.id !== "manageProfiles" ||
                 (authUser && authUser.role === "admin") ? (
                   <button
                     onClick={() => {
