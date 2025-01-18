@@ -14,7 +14,7 @@ const Home = () => {
     <>
       <Navbar activetab={activetab} setActivetab={setActivetab} />
       <div
-        className={`p-5 ${
+        className={`p-2 ${
           theme === "dark"
             ? "bg-gray-900 text-white"
             : "bg-slate-200 text-gray-900"
