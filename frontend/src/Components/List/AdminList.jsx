@@ -4,66 +4,69 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
 import Search from "./Search";
-import UpdateProduct from "../CRUD/UpdateProduct";
-import DeleteProduct from "../CRUD/DeleteProduct";
+import UpdateProfile from "../CRUD/UpdateProfile";
+import DeleteProfile from "../CRUD/DeleteProfile";
+import Logo from "../../assets/user.png";
 
 const AdminList = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(5);
+  const [profilesPerPage] = useState(5);
   const [deleteModal, setDeleteModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
-  const [products, setProducts] = useState([]);
-  const [productData, setProductData] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [profiles, setProfiles] = useState([]);
+  const [profileData, setProfileData] = useState([]);
+  const [selectedProfile, setSelectedProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [reload, setReload] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchProfiles = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/product/");
+        const response = await fetch("/api/profile/");
         if (!response.ok) {
-          throw new Error("Failed to fetch products");
+          throw new Error("Failed to fetch profiles");
         }
         const result = await response.json();
         if (!Array.isArray(result.data)) {
           throw new Error("API response is not an array");
         }
 
+        const sortedProfiles = result.data.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
 
-        const sortedProducts = result.data.sort((a, b) => {
-          return a.name.localeCompare(b.name); 
-    
-        });
-
-        setProducts(sortedProducts);
-        setProductData(sortedProducts);
-        setLoading(false);
+        setProfiles(sortedProfiles);
+        setProfileData(sortedProfiles);
+        setError(null); // Clear errors on success
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching profiles:", error);
+        setError(error.message);
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchProducts();
+    fetchProfiles();
   }, [reload]);
 
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = Array.isArray(productData)
-    ? productData.slice(indexOfFirstProduct, indexOfLastProduct)
-    : [];
+  const indexOfLastProfile = currentPage * profilesPerPage;
+  const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
+  const currentProfiles = profileData.slice(
+    indexOfFirstProfile,
+    indexOfLastProfile
+  );
 
-  const totalPages = Math.ceil(products.length / productsPerPage);
+  const totalPages = Math.ceil(profiles.length / profilesPerPage);
 
-  const handleUpdate = (product) => {
-    setSelectedProduct(product);
+  const handleUpdate = (profile) => {
+    setSelectedProfile(profile);
     setUpdateModal(true);
   };
 
-  const handleDelete = (product) => {
-    setSelectedProduct(product);
+  const handleDelete = (profile) => {
+    setSelectedProfile(profile);
     setDeleteModal(true);
   };
 
@@ -75,53 +78,65 @@ const AdminList = () => {
     <div className="p-4 font-poppins font-semibold max-w-6xl mx-auto">
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg shadow-md mb-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold mb-2 md:mb-0">All Products</h1>
+          <h1 className="text-3xl font-bold mb-2 md:mb-0">All Profiles</h1>
         </div>
       </div>
 
+      {error && <div className="text-center text-red-500 mb-4">{error}</div>}
+
       {loading ? (
         <div className="text-center py-4 text-gray-700">
-          Loading products...
+          Loading profiles...
         </div>
       ) : (
         <>
-          <Search originalData={products} setalldata={setProductData} />
+          <Search originalData={profiles} setalldata={setProfileData} />
           <div className="overflow-x-auto bg-white shadow-2xl rounded-lg">
             <table className="min-w-full table-auto border-collapse font-poppins">
               <thead>
                 <tr className="bg-gradient-to-r from-gray-200 to-gray-300 text-gray-700 uppercase text-sm">
                   <th className="px-6 py-4 text-left font-semibold">Name</th>
                   <th className="px-6 py-4 text-left font-semibold">
-                    Category
+                    Description
                   </th>
-                  <th className="px-6 py-4 text-left font-semibold">Stock</th>
-                  <th className="px-6 py-4 text-left font-semibold">Price</th>
+                  <th className="px-6 py-4 text-left font-semibold">Photo</th>
+                  <th className="px-6 py-4 text-left font-semibold">Address</th>
+                  <th className="px-6 py-4 font-semibold text-center">
+                    Coordinates
+                  </th>
                   <th className="px-6 py-4 text-left font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {currentProducts.length > 0 ? (
-                  currentProducts.map((product, index) => (
+                {currentProfiles.length > 0 ? (
+                  currentProfiles.map((profile) => (
                     <tr
-                      key={product.id || index}
+                      key={profile._id || profile.id}
                       className="bg-white hover:bg-gray-100 transition border-b"
                     >
                       <td className="px-6 py-4 text-gray-800">
-                        {product.name}
+                        {profile.name}
                       </td>
                       <td className="px-6 py-4 text-gray-800">
-                        {product.category}
+                        {profile.description}
                       </td>
                       <td className="px-6 py-4 text-gray-800">
-                        {product.stock}
+                        <img
+                          src={Logo}
+                          alt={profile.name}
+                          className="w-12 h-12 rounded-full"
+                        />
                       </td>
                       <td className="px-6 py-4 text-gray-800">
-                        ${product.price.toFixed(2)}
+                        {profile.address}
+                      </td>
+                      <td className="px-6 py-4 text-gray-800 text-center">
+                        {profile.coordinates[0]}, {profile.coordinates[1]}
                       </td>
                       <td className="px-6 py-4 flex space-x-2">
                         <Tooltip title="Edit">
                           <button
-                            onClick={() => handleUpdate(product)}
+                            onClick={() => handleUpdate(profile)}
                             className="p-2 bg-blue-500 text-white rounded-full shadow hover:bg-blue-600 transition duration-300"
                           >
                             <EditIcon />
@@ -129,7 +144,7 @@ const AdminList = () => {
                         </Tooltip>
                         <Tooltip title="Delete">
                           <button
-                            onClick={() => handleDelete(product)}
+                            onClick={() => handleDelete(profile)}
                             className="p-2 bg-red-500 text-white rounded-full shadow hover:bg-red-600 transition duration-300"
                           >
                             <DeleteIcon />
@@ -141,10 +156,10 @@ const AdminList = () => {
                 ) : (
                   <tr>
                     <td
-                      colSpan="5"
+                      colSpan="6"
                       className="text-center px-6 py-4 text-gray-600"
                     >
-                      No products found
+                      No profiles found
                     </td>
                   </tr>
                 )}
@@ -158,6 +173,7 @@ const AdminList = () => {
               page={currentPage}
               onChange={handlePageChange}
               color="primary"
+              aria-label="Profile list pagination"
               className="shadow-lg bg-white p-2 rounded-3xl"
             />
           </div>
@@ -165,16 +181,15 @@ const AdminList = () => {
       )}
 
       {updateModal && (
-        <UpdateProduct
-          productData={selectedProduct}
+        <UpdateProfile
+          profileData={selectedProfile}
           setUpdateModal={setUpdateModal}
           setReload={setReload}
         />
       )}
-
       {deleteModal && (
-        <DeleteProduct
-          productData={selectedProduct}
+        <DeleteProfile
+          profileData={selectedProfile}
           setDeleteModal={setDeleteModal}
           setReload={setReload}
         />

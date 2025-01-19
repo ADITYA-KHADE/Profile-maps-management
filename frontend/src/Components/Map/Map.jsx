@@ -28,16 +28,19 @@ const calculateCenter = (data) => {
 const Map = ({ data, selectedMarker, setSelectedMarker }) => {
   const [defaultCenter, setDefaultCenter] = useState({ lat: 0, lng: 0 });
   const [markerCenter, setMarkerCenter] = useState({ lat: 0, lng: 0 });
-  const [zoomLevel, setZoomLevel] = useState(3);
+  const [zoomLevel, setZoomLevel] = useState(2);
 
   const mapRef = useRef(null);
 
   const fitBounds = (map, data) => {
+    if (data.length === 0) return;
+
     const bounds = new window.google.maps.LatLngBounds();
     data.forEach((item) => {
       const [lng, lat] = item.coordinates;
       bounds.extend(new window.google.maps.LatLng(lat, lng));
     });
+
     map.fitBounds(bounds);
   };
 
@@ -56,8 +59,11 @@ const Map = ({ data, selectedMarker, setSelectedMarker }) => {
     } else {
       console.error("Invalid coordinates", center);
     }
+
+    if (mapRef.current && data.length > 0) {
+      fitBounds(mapRef.current, data);
+    }
   }, [data]);
-  
 
   useEffect(() => {
     if (selectedMarker) {
@@ -65,10 +71,9 @@ const Map = ({ data, selectedMarker, setSelectedMarker }) => {
       setZoomLevel(6);
     } else {
       setMarkerCenter(defaultCenter);
-      setZoomLevel(3);
+      setZoomLevel(2);
     }
   }, [selectedMarker, defaultCenter]);
-  
 
   return (
     <LoadScript googleMapsApiKey="AIzaSyBGY5aWWIzkTLNQXUD7PkjCV6Ul_ee8E34">
@@ -99,7 +104,7 @@ const Map = ({ data, selectedMarker, setSelectedMarker }) => {
             onCloseClick={() => {
               setSelectedMarker(null);
               setMarkerCenter(defaultCenter);
-              setZoomLevel(3);
+              setZoomLevel(2);
             }}
           >
             <div className="text-center">

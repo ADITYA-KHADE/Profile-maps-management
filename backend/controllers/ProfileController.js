@@ -36,8 +36,8 @@ const getProfileById = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    const Profile = await Profile.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!Profile) {
+    const Profile1 = await Profile.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!Profile1) {
       return res.status(404).json({ success: false, message: "Profile not found" });
     }
     res.status(200).json({ success: true, data: Profile });
@@ -49,8 +49,8 @@ const updateProfile = async (req, res) => {
 
 const deleteProfile = async (req, res) => {
   try {
-    const Profile = await Profile.findByIdAndDelete(req.params.id);
-    if (!Profile) {
+    const Profile1 = await Profile.findByIdAndDelete(req.params.id);
+    if (!Profile1) {
       return res.status(404).json({ success: false, message: "Profile not found" });
     }
     res.status(200).json({ success: true, data: Profile });

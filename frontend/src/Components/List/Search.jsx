@@ -30,7 +30,7 @@ const Search = ({ originalData, setalldata }) => {
 
   return (
     <div
-      className={`mb-4 flex flex-col md:flex-row gap-4 items-center p-4 rounded-md ${
+      className={`mb-1 flex flex-col md:flex-row gap-4 items-center p-2 rounded-md ${
         theme !== "dark" ? "bg-slate-400 text-white" : "bg-slate-400 text-black"
       }`}
     >

@@ -42,12 +42,12 @@ const UserList = () => {
           : "bg-slate-200 text-gray-900"
       }`}
     >
-      {/* Sidebar Section */}
+     
       <div className="w-1/4 bg-blue-400 mx-1 rounded-xl flex flex-col">
         <div className="p-2">
           <Search originalData={data} setalldata={setFilteredData} />
         </div>
-        {/* List Section with limited height */}
+       
         <div className="flex-1 overflow-y-auto max-h-[calc(100vh-120px)] p-2">
           {filteredData.length > 0 ? (
             filteredData.map((user) => (

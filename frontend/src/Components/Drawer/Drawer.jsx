@@ -4,7 +4,7 @@ import Logo from "../../assets/mark.png";
 const Drawer = ({ data, setSelectedMarker }) => {
   return (
     <div
-      className="fixed top-0 right-0 w-96 h-full bg-white shadow-lg transform transition-transform translate-x-0"
+      className="fixed top-0 right-0 w-80 h-full bg-white shadow-lg transform transition-transform translate-x-0"
       style={{ zIndex: 999 }}
     >
       <div className="flex justify-between p-4 border-b">
