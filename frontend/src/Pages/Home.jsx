@@ -2,7 +2,6 @@ import React from "react";
 import Navbar from "../Components/Navbar/Navbar";
 import UserList from "../Components/List/UserList";
 import AdminList from "../Components/List/AdminList";
-// import AddProduct from "../Components/CRUD/AddProduct";
 import { useTheme } from "../Contexts/ThemeContext";
 import { useAuthContext } from "../Contexts/AuthContext";
 

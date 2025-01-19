@@ -5,7 +5,6 @@ import Home from "./Pages/Home";
 import { Toaster } from "react-hot-toast";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthContext } from "./Contexts/AuthContext";
-import Info from "./Components/Info/Info";
 import "./App.css";
 import Footer from "./Components/Footer/Footer";
 
@@ -55,10 +54,6 @@ const App = () => {
         <Route
           path="/signup"
           element={authUser ? <Navigate to="/" /> : <Signup />}
-        />
-        <Route
-          path="/profile/:id"
-          element={authUser ? <Info /> : <Navigate to="/login" />}
         />
       </Routes>
       <Footer />
