@@ -4,6 +4,8 @@
 
 The **Profile Map Management system** is a full-stack solution designed to efficiently manage and allows users to view a list of profiles and interactively explore the addresses of each profile on a map. The application aims to provide an intuitive and user-friendly way to navigate through profiles and visualise the geographic locations associated with each individual.
 
+![alt text](http://url/to/img.png)
+
 ### Key Components:
 - **Frontend**: Developed using React and Material UI (MUI) to provide a responsive and interactive user interface.
 - **Backend**: Utilizes Node.js and Express to create robust API endpoints for CRUD operations on product data.
