@@ -1,8 +1,8 @@
-# Product List Application
+# Profile Map Management system
 
 ## Overview
 
-The **Product List Application** is a full-stack solution designed to efficiently manage and display a catalog of products. It offers features for creating, viewing, updating, and deleting product entries. The application is built with user-friendliness, scalability, and visual appeal in mind, featuring a modern and intuitive UI.
+The **Profile Map Management system** is a full-stack solution designed to efficiently manage and allows users to view a list of profiles and interactively explore the addresses of each profile on a map. The application aims to provide an intuitive and user-friendly way to navigate through profiles and visualise the geographic locations associated with each individual.
 
 ### Key Components:
 - **Frontend**: Developed using React and Material UI (MUI) to provide a responsive and interactive user interface.
@@ -10,10 +10,12 @@ The **Product List Application** is a full-stack solution designed to efficientl
 - **Database**: Employs MongoDB to store and manage product information efficiently.
 
 ## Features
-- **Add Products**: Users can add new products to the catalog through an easy-to-use form interface.
-- **View Products**: Displays products in a paginated table with sorting and filtering capabilities.
-- **Update Products**: Allows users to edit existing product details such as name, price, and description.
-- **Delete Products**: Enables removal of outdated or discontinued product entries.
+- **Interactive Mapping**: Incorporate an interactive map component that can dynamically display addresses based on user interactions. This map will allow users to see the geographical location associated with each profile.
+- **Profile Data Management** : Allow administrators to add, edit, or delete
+profiles.
+- **Search and Filter Functionality** : Provide users with the ability to search and
+filter profiles based on different criteria, such as name, location, or other
+attributes. This enhances the usability of the application.
 - **Material UI Integration**: Ensures a consistent and modern design across the application.
 - **Pagination**: Improves user experience by displaying product data in manageable chunks, especially useful for large catalogs.
 
@@ -30,32 +32,33 @@ The **Product List Application** is a full-stack solution designed to efficientl
 ### 1. Product Filtering and Sorting
 - **Challenge**: Implementing effective filtering and sorting of products on the frontend while ensuring it integrates correctly with the backend data.
 - **Solution**: Leveraged Material UI's Table component and implemented server-side filtering and sorting algorithms. The backend API was enhanced to accept query parameters (such as category, price range, sort order) and respond with appropriately filtered and sorted product data.
-
-### 2. Image Management
-- **Challenge**: Efficiently handling product images, including upload, storage, and retrieval.
-- **Solution**: Implemented a cloud-based image storage solution (e.g., AWS S3 or Cloudinary) to store product images. The backend was configured to handle image uploads and generate URLs, while the frontend was designed to display these images efficiently, including lazy loading for improved performance.
-
-### 3. Real-time Inventory Updates
-- **Challenge**: Keeping the product inventory up-to-date across multiple user sessions.
-- **Solution**: Implemented a WebSocket connection to push real-time inventory updates to all connected clients. This ensures that users always see the most current stock levels without needing to refresh the page.
+### 2. Map Integration
+- **Challenge**: Integrating an interactive map that can display multiple addresses and handle user interactions.
+- **Solution**: Utilized Google Maps JavaScript API for its robust features and ease of integration. Implemented a custom map component that can handle multiple markers and user interactions.
+### 3. Responsive Design
+- **Challenge**: Ensuring the application's UI is responsive and visually appealing across various devices and screen sizes.
+- **Solution**: Employed Material UI's responsive design principles and implemented custom CSS to fine-tun the layout for different screen sizes.
 
 
 ## Mongodb schema
 ```javascript
 const mongoose = require('mongoose');
 
-const ProductModelSchema = new mongoose.Schema({
+const ProfileModelSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  price: { type: Number, required: true },
   description: { type: String, required: true },
-  category: { type: String, required: true },
-  image: { type: String, required: true },
-  stock: { type: Number, required: true },
-});
+  address: { type: String, required: true },
+  photo: { type: String, required: true },
+  coordinates: { type: [Number], required: true },
+},
+{
+  timestamps: true,
+}
+);
 
-const ProductModel = mongoose.model('Product', ProductModelSchema)
+const ProfileModel = mongoose.model('Profile', ProfileModelSchema)
 
-module.exports = ProductModel
+module.exports = ProfileModel
 
 ```
 
@@ -91,7 +94,6 @@ const UserModel = mongoose.model("User", UserModelSchema);
 
 module.exports = UserModel;
 
-
 ```
 
 
@@ -103,7 +105,7 @@ module.exports = UserModel;
 To get started, clone this repository to your local machine:
 
 ```bash
-git clone https://github.com/ADITYA-KHADE/Products-list.git
+git clone https://github.com/ADITYA-KHADE/Profile-maps-management.git
 cd Products-list
 ```
 
@@ -117,6 +119,13 @@ PORT=your_desired_port_number
 JWT_SECRET=any secret key
 JWT_EXPIRES_IN=1h
 JWT_COOKIE_EXPIRES=3600000
+
+```
+
+also create another `.env` file inside of frontend folder and add the following environment variables:
+
+```plaintext
+VITE_MAP_API_KEY=your Map api key
 
 ```
 
