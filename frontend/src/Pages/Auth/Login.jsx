@@ -123,6 +123,19 @@ const Login = () => {
             </p>
           </div>
 
+          <div className="flex gap-2 justify-center items-center mt-0 text-gray-600">
+            <p>To access admin panel,</p>
+            <button
+              className="p-1 bg-blue-500 rounded-lg text-white"
+              onClick={() => {
+                setEmail("admin@gmail.com");
+                setPassword("123");
+              }}
+            >
+              click here
+            </button>
+          </div>
+
           <div>
             <button
               type="submit"
