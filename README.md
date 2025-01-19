@@ -3,10 +3,9 @@
 ## Overview
 
 The **Profile Map Management system** is a full-stack solution designed to efficiently manage and allows users to view a list of profiles and interactively explore the addresses of each profile on a map. The application aims to provide an intuitive and user-friendly way to navigate through profiles and visualise the geographic locations associated with each individual.
-
 <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
   <img src="https://github.com/user-attachments/assets/0d223c32-03db-4ced-af71-e11baa32b0d6" alt="s1" />
- ![s4](https://github.com/user-attachments/assets/ae8be24d-e9ec-48a4-a53b-fe9a12db7ea7)
+  <img src="https://github.com/user-attachments/assets/ae8be24d-e9ec-48a4-a53b-fe9a12db7ea7" alt="s4" />
 </div>
 
  <img src="https://github.com/user-attachments/assets/f6aff47a-ea11-43d6-83df-abcbd8860d59" alt="s3" />
