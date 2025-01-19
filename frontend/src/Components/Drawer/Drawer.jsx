@@ -25,9 +25,9 @@ const Drawer = ({ data, setSelectedMarker }) => {
         </button>
       </div>
 
-      {/* Drawer Content */}
+     
       <div className="p-4 text-center">
-        <img src={Logo} alt="Logo" className="w-48 h-36 mx-auto" />
+        <img src={data.photo ? data.photo :Logo} alt="Logo" className="w-48 h-44 mx-auto" />
         <h3 className="text-2xl mt-2 font-semibold">{data.name}</h3>
         <p className="mt-2">{data.description}</p>
         <p className="mt-3">

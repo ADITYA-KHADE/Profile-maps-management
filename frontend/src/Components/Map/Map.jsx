@@ -135,16 +135,16 @@ const Map = ({ data, selectedMarker, setSelectedMarker }) => {
           <div className="text-center">
             <div className="flex items-center space-x-4">
               <img
-                src={Logo}
+                src={selectedMarker.photo ? selectedMarker.photo : Logo}
                 alt={selectedMarker.name}
-                className="w-24 h-auto"
+                className="w-20 h-auto"
               />
               <div>
                 <h3 className="text-lg font-bold">{selectedMarker.name}</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-xs mb-2 text-gray-600">
                   {selectedMarker.description}
                 </p>
-                <p className="text-sm text-gray-500 w-40">
+                <p className="text-xs text-gray-500 w-32">
                   {selectedMarker.address}
                 </p>
               </div>

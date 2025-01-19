@@ -9,6 +9,8 @@ const AddProfile = ({ setAddModal, setReload }) => {
     address: "",
     coordinates: [0, 0],
   });
+
+  
   const [loading, setLoading] = useState(false);
   const [longitude, setLongitude] = useState("");
   const [latitude, setLatitude] = useState("");
@@ -28,7 +30,14 @@ const AddProfile = ({ setAddModal, setReload }) => {
         ...prev,
         coordinates: [prev.coordinates[0], parseFloat(value) || 0],
       }));
-    } else {
+    } else if(name=="name"){
+      setAddProfile((prev) => ({ ...prev, name: value }));
+      setAddProfile((prev) => ({
+        ...prev,
+        photo: `https://avatar.iran.liara.run/username?username=${value}`,
+      }));
+    }
+    else {
       setAddProfile((prev) => ({
         ...prev,
         [name]: value,
@@ -37,12 +46,8 @@ const AddProfile = ({ setAddModal, setReload }) => {
   };
 
   const handleAdd = async () => {
-    setAddProfile((prev) => ({
-      ...prev,
-      photo: `https://avatar.iran.liara.run/username?username=${addProfile.name}`,
-    }));
+    
     const { name, description, photo, address, coordinates } = addProfile;
-    console.log(addProfile);
 
     if (
       !name ||
@@ -53,6 +58,7 @@ const AddProfile = ({ setAddModal, setReload }) => {
       coordinates.some(isNaN)
     ) {
       toast.error("Please fill out all fields correctly.");
+      console.log(addProfile);
       return;
     }
 

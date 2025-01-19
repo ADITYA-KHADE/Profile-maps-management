@@ -21,6 +21,7 @@
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
     "leaflet": "^1.9.4",
+    "productlist": "file:..",
     "react": "^19.0.0-rc.1",
     "react-dom": "^19.0.0-rc.1",
     "react-hot-toast": "^2.5.1",
