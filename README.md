@@ -4,7 +4,7 @@
 
 The **Profile Map Management system** is a full-stack solution designed to efficiently manage and allows users to view a list of profiles and interactively explore the addresses of each profile on a map. The application aims to provide an intuitive and user-friendly way to navigate through profiles and visualise the geographic locations associated with each individual.
 
-![alt text](http://url/to/img.png)
+![alt text](https://raw.githubusercontent.com/ADITYA-KHADE/Profile-maps-management/main/frontend/public/s1.png)
 
 ### Key Components:
 - **Frontend**: Developed using React and Material UI (MUI) to provide a responsive and interactive user interface.
