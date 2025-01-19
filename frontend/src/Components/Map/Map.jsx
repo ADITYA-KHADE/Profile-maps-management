@@ -8,6 +8,9 @@ import {
 import Logo from "../../assets/mark.png";
 import Drawer from "../Drawer/Drawer";
 
+const api=import.meta.env.VITE_MAP_API_KEY;
+
+
 const containerStyle = {
   width: "100%",
   height: "100vh",
@@ -41,7 +44,7 @@ const Map = ({ data, selectedMarker, setSelectedMarker }) => {
   const [zoomLevel, setZoomLevel] = useState(2);
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyBGY5aWWIzkTLNQXUD7PkjCV6Ul_ee8E34",
+    googleMapsApiKey: api,
   });
 
   const mapRef = useRef(null);
