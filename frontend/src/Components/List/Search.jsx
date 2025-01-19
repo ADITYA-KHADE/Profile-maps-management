@@ -30,8 +30,8 @@ const Search = ({ originalData, setalldata }) => {
 
   return (
     <div
-      className={`mb-1 flex flex-col md:flex-row gap-4 items-center p-2 rounded-md ${
-        theme !== "dark" ? "bg-slate-400 text-white" : "bg-slate-400 text-black"
+      className={`mb-1 flex flex-col md:flex-row gap-4 items-center p-2 rounded-md shadow-xl bg-gradient-to-r from-blue-500 to-purple-600 ${
+        theme !== "dark" ? " text-white" : " text-black"
       }`}
     >
       <input
@@ -40,7 +40,7 @@ const Search = ({ originalData, setalldata }) => {
         value={search}
         onChange={handleSearch}
         className={`border p-2 rounded-md w-full md:w-3/4 ${
-          theme === "dark" ? "bg-gray-700 text-white" : "bg-slate-300 text-black"
+          theme === "dark" ? "bg-gray-800 text-white" : "bg-slate-100 text-black"
         }`}
       />
       <button

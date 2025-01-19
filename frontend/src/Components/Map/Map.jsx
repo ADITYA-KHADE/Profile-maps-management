@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import {
   GoogleMap,
-  LoadScript,
+  useJsApiLoader,
   Marker,
   InfoWindow,
 } from "@react-google-maps/api";
@@ -25,10 +25,24 @@ const calculateCenter = (data) => {
   };
 };
 
+const validateCoordinates = (item) => {
+  return (
+    item.coordinates &&
+    Array.isArray(item.coordinates) &&
+    item.coordinates.length === 2 &&
+    !isNaN(item.coordinates[0]) &&
+    !isNaN(item.coordinates[1])
+  );
+};
+
 const Map = ({ data, selectedMarker, setSelectedMarker }) => {
   const [defaultCenter, setDefaultCenter] = useState({ lat: 0, lng: 0 });
   const [markerCenter, setMarkerCenter] = useState({ lat: 0, lng: 0 });
   const [zoomLevel, setZoomLevel] = useState(2);
+
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyBGY5aWWIzkTLNQXUD7PkjCV6Ul_ee8E34",
+  });
 
   const mapRef = useRef(null);
 
@@ -37,8 +51,10 @@ const Map = ({ data, selectedMarker, setSelectedMarker }) => {
 
     const bounds = new window.google.maps.LatLngBounds();
     data.forEach((item) => {
-      const [lng, lat] = item.coordinates;
-      bounds.extend(new window.google.maps.LatLng(lat, lng));
+      if (validateCoordinates(item)) {
+        const [lng, lat] = item.coordinates;
+        bounds.extend(new window.google.maps.LatLng(lat, lng));
+      }
     });
 
     map.fitBounds(bounds);
@@ -52,7 +68,7 @@ const Map = ({ data, selectedMarker, setSelectedMarker }) => {
   };
 
   useEffect(() => {
-    const center = calculateCenter(data);
+    const center = calculateCenter(data.filter(validateCoordinates));
     if (center.lat && center.lng) {
       setMarkerCenter(center);
       setDefaultCenter(center);
@@ -75,64 +91,69 @@ const Map = ({ data, selectedMarker, setSelectedMarker }) => {
     }
   }, [selectedMarker, defaultCenter]);
 
-  return (
-    <LoadScript googleMapsApiKey="AIzaSyBGY5aWWIzkTLNQXUD7PkjCV6Ul_ee8E34">
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        onLoad={onLoad}
-        center={markerCenter}
-        zoom={zoomLevel}
-      >
-        {data.map((item, index) => (
-          <Marker
-            key={index}
-            position={{ lat: item.coordinates[1], lng: item.coordinates[0] }}
-            onClick={() => {
-              setSelectedMarker(item);
-              setMarkerCenter(item.coordinates);
-              setZoomLevel(6);
-            }}
-          />
-        ))}
+  if (loadError) return <div>Error loading Google Maps</div>;
+  if (!isLoaded) return <div>Loading...</div>;
 
-        {selectedMarker && (
-          <InfoWindow
-            position={{
-              lat: selectedMarker.coordinates[1],
-              lng: selectedMarker.coordinates[0],
-            }}
-            onCloseClick={() => {
-              setSelectedMarker(null);
-              setMarkerCenter(defaultCenter);
-              setZoomLevel(2);
-            }}
-          >
-            <div className="text-center">
-              <div className="flex items-center space-x-4">
-                <img
-                  src={Logo}
-                  alt={selectedMarker.name}
-                  className="w-24 h-auto"
-                />
-                <div>
-                  <h3 className="text-lg font-bold">{selectedMarker.name}</h3>
-                  <p className="text-sm text-gray-600">
-                    {selectedMarker.description}
-                  </p>
-                  <p className="text-sm text-gray-500 w-40">
-                    {selectedMarker.address}
-                  </p>
-                </div>
+  if (!data || data.length === 0) {
+    return <div>No data available to display on the map.</div>;
+  }
+
+  return (
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      onLoad={onLoad}
+      center={markerCenter}
+      zoom={zoomLevel}
+    >
+      {data.filter(validateCoordinates).map((item, index) => (
+        <Marker
+          key={index}
+          position={{ lat: item.coordinates[1], lng: item.coordinates[0] }}
+          onClick={() => {
+            setSelectedMarker(item);
+            setMarkerCenter(item.coordinates);
+            setZoomLevel(6);
+          }}
+        />
+      ))}
+
+      {selectedMarker && (
+        <InfoWindow
+          position={{
+            lat: selectedMarker.coordinates[1],
+            lng: selectedMarker.coordinates[0],
+          }}
+          onCloseClick={() => {
+            setSelectedMarker(null);
+            setMarkerCenter(defaultCenter);
+            setZoomLevel(2);
+          }}
+        >
+          <div className="text-center">
+            <div className="flex items-center space-x-4">
+              <img
+                src={Logo}
+                alt={selectedMarker.name}
+                className="w-24 h-auto"
+              />
+              <div>
+                <h3 className="text-lg font-bold">{selectedMarker.name}</h3>
+                <p className="text-sm text-gray-600">
+                  {selectedMarker.description}
+                </p>
+                <p className="text-sm text-gray-500 w-40">
+                  {selectedMarker.address}
+                </p>
               </div>
             </div>
-          </InfoWindow>
-        )}
+          </div>
+        </InfoWindow>
+      )}
 
-        {selectedMarker && (
-          <Drawer data={selectedMarker} setSelectedMarker={setSelectedMarker} />
-        )}
-      </GoogleMap>
-    </LoadScript>
+      {selectedMarker && (
+        <Drawer data={selectedMarker} setSelectedMarker={setSelectedMarker} />
+      )}
+    </GoogleMap>
   );
 };
 

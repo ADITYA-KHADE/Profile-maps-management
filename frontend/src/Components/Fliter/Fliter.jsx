@@ -39,10 +39,8 @@ const Filter = ({
     }
   };
 
-
-
   return (
-    <div className="bg-white p-6 rounded-lg shadow-xl w-96 relative">
+    <div className="bg-white p-6 sm:p-4 rounded-lg shadow-xl w-full max-w-md sm:max-w-sm relative m-4">
       <div className="flex justify-between items-center mb-4">
         <h2 className="font-bold text-xl text-gray-800">Filter Options</h2>
         <IconButton onClick={closeFilter} color="secondary" aria-label="close">
@@ -52,7 +50,7 @@ const Filter = ({
 
       <FormGroup>
         <h3 className="text-gray-700 mb-2">Roles</h3>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {allroles.map((role, index) => (
             <FormControlLabel
               key={index}
@@ -64,7 +62,11 @@ const Filter = ({
                   color="primary"
                 />
               }
-              label={<span className="break-words text-gray-700 text-xs">{role}</span>} 
+              label={
+                <span className="break-words text-gray-700 text-xs">
+                  {role}
+                </span>
+              }
               className="flex items-center"
             />
           ))}
@@ -77,6 +79,7 @@ const Filter = ({
           variant="contained"
           color="error"
           size="large"
+          className="transition-transform transform hover:scale-105"
         >
           Clear
         </Button>
@@ -85,6 +88,7 @@ const Filter = ({
           variant="contained"
           color="primary"
           size="large"
+          className="transition-transform transform hover:scale-105"
         >
           Apply
         </Button>

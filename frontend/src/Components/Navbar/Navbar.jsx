@@ -5,6 +5,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "../../Contexts/ThemeContext";
 import { useAuthContext } from "../../Contexts/AuthContext";
 import { IoLogOutOutline } from "react-icons/io5";
+import { toast } from "react-hot-toast";
 
 const navigation = [
   { name: "All Profiles", id: "allProfiles" },

@@ -83,7 +83,7 @@ const AdminList = () => {
 
   return (
     <div className="p-4 font-poppins font-semibold max-w-6xl mx-auto">
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg shadow-md mb-6">
+      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg shadow-md mb-2">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold mb-2 md:mb-0">All Profiles</h1>
           <button
@@ -136,7 +136,7 @@ const AdminList = () => {
                       </td>
                       <td className="px-6 py-4 text-gray-800">
                         <img
-                          src={Logo}
+                          src={profile.photo ? profile.photo : Logo}
                           alt={profile.name}
                           className="w-12 h-12 rounded-full"
                         />

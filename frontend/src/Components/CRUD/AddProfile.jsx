@@ -7,19 +7,23 @@ const AddProfile = ({ setAddModal, setReload }) => {
     description: "",
     photo: "",
     address: "",
-    coordinates: [0, 0], // Default coordinates
+    coordinates: [0, 0],
   });
   const [loading, setLoading] = useState(false);
+  const [longitude, setLongitude] = useState("");
+  const [latitude, setLatitude] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
     if (name === "longitude") {
+      setLongitude(value);
       setAddProfile((prev) => ({
         ...prev,
         coordinates: [parseFloat(value) || 0, prev.coordinates[1]],
       }));
     } else if (name === "latitude") {
+      setLatitude(value);
       setAddProfile((prev) => ({
         ...prev,
         coordinates: [prev.coordinates[0], parseFloat(value) || 0],
@@ -33,7 +37,12 @@ const AddProfile = ({ setAddModal, setReload }) => {
   };
 
   const handleAdd = async () => {
+    setAddProfile((prev) => ({
+      ...prev,
+      photo: `https://avatar.iran.liara.run/username?username=${addProfile.name}`,
+    }));
     const { name, description, photo, address, coordinates } = addProfile;
+    console.log(addProfile);
 
     if (
       !name ||
@@ -87,7 +96,9 @@ const AddProfile = ({ setAddModal, setReload }) => {
       tabIndex={-1}
     >
       <div className="bg-white rounded-lg p-6 w-96 shadow-lg">
-        <h2 className="text-lg font-semibold mb-4 text-gray-700">Add Profile</h2>
+        <h2 className="text-lg font-semibold mb-4 text-gray-700">
+          Add Profile
+        </h2>
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -116,19 +127,6 @@ const AddProfile = ({ setAddModal, setReload }) => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Photo URL
-            </label>
-            <input
-              type="url"
-              name="photo"
-              value={addProfile.photo}
-              onChange={handleInputChange}
-              className="w-full border rounded-lg px-3 py-2 mt-1 bg-slate-100 text-gray-800"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
               Address
             </label>
             <input
@@ -142,34 +140,36 @@ const AddProfile = ({ setAddModal, setReload }) => {
           </div>
           <div className="flex space-x-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="longitude"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Longitude
               </label>
               <input
-                type="number"
+                type="text"
+                id="longitude"
                 name="longitude"
-                value={addProfile.coordinates[0]}
+                value={longitude}
                 onChange={handleInputChange}
                 className="w-full border rounded-lg px-3 py-2 mt-1 bg-slate-100 text-gray-800"
-                step="any"
-                min="-180"
-                max="180"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="latitude"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Latitude
               </label>
               <input
-                type="number"
+                type="text"
+                id="latitude"
                 name="latitude"
-                value={addProfile.coordinates[1]}
+                value={latitude}
                 onChange={handleInputChange}
                 className="w-full border rounded-lg px-3 py-2 mt-1 bg-slate-100 text-gray-800"
-                step="any"
-                min="-90"
-                max="90"
                 required
               />
             </div>

@@ -1,32 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 
-
 const UpdateProfile = ({ profileData, setUpdateModal, setReload }) => {
   const [updatedProfile, setUpdatedProfile] = useState({
     name: "",
     description: "",
     photo: "",
     address: "",
-    coordinates: [0, 0], // [longitude, latitude]
+    coordinates: [0, 0],
   });
   const [loading, setLoading] = useState(false);
+  const [longitude, setLongitude] = useState("");
+  const [latitude, setLatitude] = useState("");
 
   useEffect(() => {
     if (profileData) {
       setUpdatedProfile(profileData);
+      setLongitude(profileData.coordinates[0]?.toString() || "");
+      setLatitude(profileData.coordinates[1]?.toString() || "");
     }
   }, [profileData]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setUpdateModal(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [setUpdateModal]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
     if (name === "longitude") {
+      setLongitude(value);
       setUpdatedProfile((prev) => ({
         ...prev,
         coordinates: [parseFloat(value) || 0, prev.coordinates[1]],
       }));
     } else if (name === "latitude") {
+      setLatitude(value);
       setUpdatedProfile((prev) => ({
         ...prev,
         coordinates: [prev.coordinates[0], parseFloat(value) || 0],
@@ -83,16 +100,9 @@ const UpdateProfile = ({ profileData, setUpdateModal, setReload }) => {
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Escape") {
-      setUpdateModal(false);
-    }
-  };
-
   return (
     <div
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-      onKeyDown={handleKeyDown}
       tabIndex={-1}
     >
       <div className="bg-white rounded-lg p-6 w-96 shadow-lg">
@@ -101,11 +111,15 @@ const UpdateProfile = ({ profileData, setUpdateModal, setReload }) => {
         </h2>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
               Name
             </label>
             <input
               type="text"
+              id="name"
               name="name"
               value={updatedProfile.name}
               onChange={handleInputChange}
@@ -114,10 +128,14 @@ const UpdateProfile = ({ profileData, setUpdateModal, setReload }) => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700"
+            >
               Description
             </label>
             <textarea
+              id="description"
               name="description"
               value={updatedProfile.description}
               onChange={handleInputChange}
@@ -126,24 +144,15 @@ const UpdateProfile = ({ profileData, setUpdateModal, setReload }) => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Photo URL
-            </label>
-            <input
-              type="url"
-              name="photo"
-              value={updatedProfile.photo}
-              onChange={handleInputChange}
-              className="w-full border rounded-lg px-3 py-2 mt-1 bg-slate-100 text-gray-800"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="address"
+              className="block text-sm font-medium text-gray-700"
+            >
               Address
             </label>
             <input
               type="text"
+              id="address"
               name="address"
               value={updatedProfile.address}
               onChange={handleInputChange}
@@ -153,34 +162,36 @@ const UpdateProfile = ({ profileData, setUpdateModal, setReload }) => {
           </div>
           <div className="flex space-x-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="longitude"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Longitude
               </label>
               <input
-                type="number"
+                type="text"
+                id="longitude"
                 name="longitude"
-                value={updatedProfile.coordinates[0]}
+                value={longitude}
                 onChange={handleInputChange}
                 className="w-full border rounded-lg px-3 py-2 mt-1 bg-slate-100 text-gray-800"
-                step="any" // Allows decimal values
-                min="-180" // Valid range for longitude
-                max="180"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="latitude"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Latitude
               </label>
               <input
-                type="number"
+                type="text"
+                id="latitude"
                 name="latitude"
-                value={updatedProfile.coordinates[1]}
+                value={latitude}
                 onChange={handleInputChange}
                 className="w-full border rounded-lg px-3 py-2 mt-1 bg-slate-100 text-gray-800"
-                step="any" // Allows decimal values
-                min="-90" // Valid range for latitude
-                max="90"
                 required
               />
             </div>

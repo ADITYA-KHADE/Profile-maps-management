@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import Search from "./Search";
 import Map from "../Map/Map";
 import { useTheme } from "../../Contexts/ThemeContext";
-import { Link } from "react-router-dom";
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Logo from "../../assets/user.png";
 
 const UserList = () => {
@@ -36,37 +35,49 @@ const UserList = () => {
 
   return (
     <div
-      className={`p-1 flex ${
+      className={` flex flex-col lg:flex-row ${
         theme === "dark"
           ? "bg-gray-900 text-white"
           : "bg-slate-200 text-gray-900"
-      }`}
+      } min-h-screen`}
     >
-     
-      <div className="w-1/4 bg-blue-400 mx-1 rounded-xl flex flex-col">
-        <div className="p-2">
+      <div className="lg:w-1/4 bg-gradient-to-r from-blue-500 to-purple-600 mx-1 rounded-xl flex flex-col p-1">
+        <div className="mb-4">
           <Search originalData={data} setalldata={setFilteredData} />
         </div>
-       
-        <div className="flex-1 overflow-y-auto max-h-[calc(100vh-120px)] p-2">
+
+        <div className="flex-1 overflow-y-auto max-h-screen lg:max-h-[calc(100vh-120px)] p-2 rounded-xl shadow-lg">
           {filteredData.length > 0 ? (
             filteredData.map((user) => (
               <div
                 key={user.id}
-                className="flex flex-col p-2 border border-gray-500 rounded-md mb-2"
+                className="flex flex-col p-2 border border-gray-300 rounded-md mb-2 transition-transform transform hover:scale-105 hover:shadow-2xl bg-gray-100"
               >
                 <div className="flex justify-between items-center">
-                  <div className="flex items-center">
-                    <img src={Logo} alt="" className="w-10 h-10 rounded-full" />
-                    <div className="flex flex-col mx-2">
-                      <h2 className="text-lg font-bold">{user.name}</h2>
-                      <p className="text-xs">{user.description}</p>
+                  <div className="flex items-center ">
+                    <img src={user.photo ? user.photo : Logo} alt="" className="w-12 h-12 rounded-full" />
+                    <div className="flex flex-col mx-4">
+                      <h2 className="text-base font-bold text-black">
+                        {user.name}
+                      </h2>
+                      <p className="text-xs text-gray-600">
+                        {user.description}
+                      </p>
                     </div>
                   </div>
-                  <button onClick={()=>{
-                    setSelectedMarker(user);
-                  }} className="text-blue-500">
-                    <FaEye />
+                  <button
+                    onClick={() => {
+                      setSelectedMarker(
+                         user
+                      );
+                    }}
+                    className="text-blue-500 hover:text-blue-700 transition-colors"
+                  >
+                    {selectedMarker?._id === user._id ? (
+                      <FaEyeSlash />
+                    ) : (
+                      <FaEye />
+                    )}
                   </button>
                 </div>
               </div>
@@ -78,9 +89,15 @@ const UserList = () => {
           )}
         </div>
       </div>
-    
-      <div className="w-3/4 mx-1 rounded-xl">
-        <Map data={filteredData} selectedMarker={selectedMarker} setSelectedMarker={setSelectedMarker} />
+
+      <div className="lg:w-3/4 mt-4 lg:mt-0 mx-1 rounded-xl flex flex-col">
+        {filteredData.length>0 && (
+          <Map
+            data={filteredData}
+            selectedMarker={selectedMarker}
+            setSelectedMarker={setSelectedMarker}
+          />
+        )}
       </div>
     </div>
   );
