@@ -6,13 +6,16 @@ import Tooltip from "@mui/material/Tooltip";
 import Search from "./Search";
 import UpdateProfile from "../CRUD/UpdateProfile";
 import DeleteProfile from "../CRUD/DeleteProfile";
+import AddProfile from "../CRUD/AddProfile";
 import Logo from "../../assets/user.png";
+import { FaAddressCard } from "react-icons/fa";
 
 const AdminList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [profilesPerPage] = useState(5);
   const [deleteModal, setDeleteModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
+  const [addModal, setAddModal] = useState(false);
   const [profiles, setProfiles] = useState([]);
   const [profileData, setProfileData] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
@@ -39,7 +42,7 @@ const AdminList = () => {
 
         setProfiles(sortedProfiles);
         setProfileData(sortedProfiles);
-        setError(null); // Clear errors on success
+        setError(null);
       } catch (error) {
         console.error("Error fetching profiles:", error);
         setError(error.message);
@@ -65,6 +68,10 @@ const AdminList = () => {
     setUpdateModal(true);
   };
 
+  const handleAdd = () => {
+    setAddModal(true);
+  };
+
   const handleDelete = (profile) => {
     setSelectedProfile(profile);
     setDeleteModal(true);
@@ -79,6 +86,13 @@ const AdminList = () => {
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg shadow-md mb-6">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold mb-2 md:mb-0">All Profiles</h1>
+          <button
+            onClick={handleAdd}
+            className="p-2 flex items-center bg-green-500 text-white rounded-full shadow hover:bg-green-600 transition duration-300"
+          >
+            <FaAddressCard className="mr-2" />
+            Add Profile
+          </button>
         </div>
       </div>
 
@@ -193,6 +207,9 @@ const AdminList = () => {
           setDeleteModal={setDeleteModal}
           setReload={setReload}
         />
+      )}
+      {addModal && (
+        <AddProfile setAddModal={setAddModal} setReload={setReload} />
       )}
     </div>
   );

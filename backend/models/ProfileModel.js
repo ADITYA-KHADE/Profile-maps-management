@@ -4,7 +4,7 @@ const ProfileModelSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
   address: { type: String, required: true },
-  image: { type: String, required: true },
+  photo: { type: String, required: true },
   coordinates: { type: [Number], required: true },
 },
 {
